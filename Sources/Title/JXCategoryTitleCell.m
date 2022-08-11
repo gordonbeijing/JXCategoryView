@@ -101,6 +101,10 @@
             CGAffineTransform currentTransform = CGAffineTransformMakeScale(baseScale*myCellModel.titleLabelCurrentZoomScale, baseScale*myCellModel.titleLabelCurrentZoomScale);
             self.titleLabel.transform = currentTransform;
             self.maskTitleLabel.transform = currentTransform;
+            if (myCellModel.isSelected) {
+                self.titleLabel.font = myCellModel.titleSelectedFont;
+                self.maskTitleLabel.font = myCellModel.titleSelectedFont;
+            }
         }
     } else {
         if (myCellModel.isSelected) {
@@ -189,9 +193,11 @@
     return ^(CGFloat percent) {
         if (cellModel.isSelected) {
             //将要选中，scale从小到大插值渐变
+            weakSelf.titleLabel.font = cellModel.titleSelectedFont;
             cellModel.titleLabelCurrentZoomScale = [JXCategoryFactory interpolationFrom:cellModel.titleLabelNormalZoomScale to:cellModel.titleLabelSelectedZoomScale percent:percent];
         } else {
             //将要取消选中，scale从大到小插值渐变
+            weakSelf.titleLabel.font = [UIFont systemFontOfSize:19];
             cellModel.titleLabelCurrentZoomScale = [JXCategoryFactory interpolationFrom:cellModel.titleLabelSelectedZoomScale to:cellModel.titleLabelNormalZoomScale percent:percent];
         }
         CGAffineTransform currentTransform = CGAffineTransformMakeScale(baseScale*cellModel.titleLabelCurrentZoomScale, baseScale*cellModel.titleLabelCurrentZoomScale);
